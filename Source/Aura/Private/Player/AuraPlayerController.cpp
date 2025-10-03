@@ -17,7 +17,7 @@ void AAuraPlayerController::BeginPlay()
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	check(Subsystem);
-	Subsystem->AddMappingContext(AuraContext, 0); //Pirority is for cases where there's several inputmappings interfering
+	Subsystem->AddMappingContext(AuraContext, 0); //Priority is for cases where there's several input mappings interfering
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -32,7 +32,7 @@ void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent); //This class type for handling input is set in the editor Project settings > Input > Default Classes
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move); //Binding the custom MoveAction through the input component to the Move function
 }
@@ -44,7 +44,7 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.0f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); //Forward vector corresponding to yaw rotation
-	const FVector RightDirection = FRotationMatrix(Rotation).GetUnitAxis(EAxis::Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
