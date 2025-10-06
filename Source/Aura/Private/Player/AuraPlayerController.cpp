@@ -14,7 +14,7 @@ AAuraPlayerController::AAuraPlayerController()
 void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-
+	CursorTrace();
 	
 }
 
@@ -70,6 +70,20 @@ void AAuraPlayerController::CursorTrace()
 	LastActor = ThisActor;
 	ThisActor = CursorHit.GetActor();
 
+	if (ThisActor != LastActor)
+	{
+		if (LastActor != nullptr)
+		{
+			LastActor->HighlightActor();
+			
+		}
+ 
+		if (ThisActor != nullptr)
+		{
+			ThisActor->HighlightActor();
+		}
+	}
+	
 	if (LastActor==nullptr)
 	{
 		if (ThisActor!=nullptr)
