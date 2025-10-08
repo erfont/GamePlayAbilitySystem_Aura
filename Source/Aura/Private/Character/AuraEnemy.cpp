@@ -18,11 +18,18 @@ AAuraEnemy::AAuraEnemy()
 
 
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
+
 }
 
 void AAuraEnemy::HighlightActor()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Highlighted"));
+
+	/*This works when in Ortho camera, as an Overlay material*/
+	GetMesh()->SetOverlayMaterial(OverlayMaterial);
+	Weapon->SetOverlayMaterial(OverlayMaterial);
+
+	/*This works when in Perspective camera, as a Postprocessing effect*/
 	GetMesh()->SetRenderCustomDepth(true);
 	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 	Weapon->SetRenderCustomDepth(true);
@@ -33,6 +40,12 @@ void AAuraEnemy::HighlightActor()
 void AAuraEnemy::UnHighlightActor()
 {
 	UE_LOG(LogTemp, Warning, TEXT("UNHighlighted"));
+
+	/*This works when in Ortho camera, as an Overlay material*/
+	GetMesh()->SetOverlayMaterial(nullptr);
+	Weapon->SetOverlayMaterial(nullptr);
+
+	/*This works when in Perspective camera, as a Postprocessing effect*/
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);
 
@@ -43,4 +56,6 @@ void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	
+
 }

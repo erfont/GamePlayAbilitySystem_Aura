@@ -5,6 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -47,12 +48,23 @@ void AAuraPlayerController::SetupInputComponent()
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	/* This works for rotated cameras, so that the character walks towards camera UP when W is pressed */
+	const FRotator CameraRotation = UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->GetCameraRotation();
+	const FRotator CameraYawRotation(0.f, CameraRotation.Yaw, 0.0f);
+
+	const FVector ForwardDirection = FRotationMatrix(CameraYawRotation).GetUnitAxis(EAxis::X); //Forward vector corresponding to yaw rotation
+	const FVector RightDirection = FRotationMatrix(CameraYawRotation).GetUnitAxis(EAxis::Y);
+
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
+	
+	/* This works with a cameras that are always pointing at the same direction as UP,
+	 * but as soon as you rotate the camera, the character walks towards its own UP direction instead of towards camera UP direction
+	
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.0f);
 
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X); //Forward vector corresponding to yaw rotation
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);*/
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{

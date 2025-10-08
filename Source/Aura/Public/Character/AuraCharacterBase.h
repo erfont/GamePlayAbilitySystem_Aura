@@ -21,6 +21,8 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAuraAttributeSet* GetAttributeSet() const {return AttributeSet;}
 	
+	
+	
 
 protected:
 	virtual void BeginPlay() override;
@@ -33,5 +35,9 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAuraAttributeSet> AttributeSet;
+
+	/*To store the Overlay material for the highlight effect in Ortho camera*/
+	UPROPERTY()
+	TObjectPtr<UMaterialInterface> OverlayMaterial;
 
 };
