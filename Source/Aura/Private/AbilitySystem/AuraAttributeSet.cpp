@@ -24,6 +24,31 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 }
 
+/* This method runs jkust before applying any changes to the attributes, which is useful for clamping values before changing*/
+void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	if (Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+		//UE_LOG(LogTemp, Warning, TEXT("Health: %f"), NewValue);
+	}
+	if (Attribute == GetMaxHealthAttribute())
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Max Health: %f"), NewValue);
+	}
+	if (Attribute == GetManaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
+		//UE_LOG(LogTemp, Warning, TEXT("Mana: %f"), NewValue);
+	}
+	if (Attribute == GetMaxManaAttribute())
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Max Mana: %f"), NewValue);
+	}
+}
+
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth); //Notify the attribute system that Health has been replicated from the server
