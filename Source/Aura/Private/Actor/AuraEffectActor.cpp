@@ -38,4 +38,12 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get()); // The * is there to cast the pointer to Data.Get() to a const reference that's expected by the method 
 }
 
+void AAuraEffectActor::OnOverlap(AActor* TargetActor) const
+{
+}
+
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor) const
+{
+}
+
 
