@@ -36,12 +36,17 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 
+	/* This binding is done through a Lambda anonymous function, defined in line
+	 * Brackets [] are for stating what we need to capture for the method call to work 
+	 */
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[](const FGameplayTagContainer& TagContainer)
+		[this](const FGameplayTagContainer& TagContainer)
 		{
 			for (const FGameplayTag& Tag : TagContainer)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(Tag.ToString()));
+
+				FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
 			}
 		}
 	);
