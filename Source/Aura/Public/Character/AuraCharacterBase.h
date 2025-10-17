@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayEffect.h"
 #include "AuraCharacterBase.generated.h"
 
 class UAuraAttributeSet;
@@ -41,5 +42,11 @@ protected:
 	/*To store the Overlay material for the highlight effect in Ortho camera*/
 	UPROPERTY()
 	TObjectPtr<UMaterialInterface> OverlayMaterial;
+
+	/* Dault values for primary attributes, class defined here and filled out in Editor */
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	void InitializePrimaryAttributes() const;
 
 };
