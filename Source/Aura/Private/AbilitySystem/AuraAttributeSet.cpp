@@ -45,12 +45,12 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 
 }
 
-/* This method runs jkust before applying any changes to the attributes, which is useful for clamping values before changing*/
+/* This method runs just before applying any changes to the attributes, which is useful for clamping values before changing*/
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	if (Attribute == GetHealthAttribute())
+	/*if (Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
 		//UE_LOG(LogTemp, Warning, TEXT("Health: %f"), NewValue);
@@ -67,7 +67,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 	if (Attribute == GetMaxManaAttribute())
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Max Mana: %f"), NewValue);
-	}
+	}*/
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
