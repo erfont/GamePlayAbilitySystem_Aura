@@ -11,8 +11,13 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
+	/*
+	 * Init values for health and mana are set to their Max values by means of a GE. here's legacy init code.
+
 	InitHealth(10.f); //This init function is not coded manually but through the macros in the header file
 	InitMana(50.f);
+	
+	*/
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

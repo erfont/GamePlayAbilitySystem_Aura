@@ -47,8 +47,11 @@ void AAuraCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> Gameplay
 
 void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
+	// The order for these calls is key, since the latter are based on the former
+	
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
 	
 }
 
