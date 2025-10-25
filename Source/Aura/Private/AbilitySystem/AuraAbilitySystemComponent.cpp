@@ -36,6 +36,16 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	
 }
 
+void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
+{
+	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
+		//GiveAbility(AbilitySpec);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 /* This is a callback. Callbacks are to be bound to delegates from the AbilitySystemComponent.h library
  * We make the binding just above, in AbilityActorInfoSet, which is called
  * - by Aura in InitAbilityActorInfo, that's called when possessed
