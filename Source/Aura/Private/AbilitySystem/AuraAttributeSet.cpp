@@ -8,16 +8,19 @@
 #include "AbilitySystemComponent.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
+#include "AuraGameplayTags.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	/*
-	 * Init values for health and mana are set to their Max values by means of a GE. here's legacy init code.
+	TagsToAttributes.Add(AuraGameplayTags::Attributes_Primary_Strength, GetStrengthAttribute);
+	TagsToAttributes.Add(AuraGameplayTags::Attributes_Primary_Intelligence, GetIntelligenceAttribute);
+	TagsToAttributes.Add(AuraGameplayTags::Attributes_Primary_Resilience, GetResilienceAttribute);
+	TagsToAttributes.Add(AuraGameplayTags::Attributes_Primary_Vigor, GetVigorAttribute);
 
-	InitHealth(10.f); //This init function is not coded manually but through the macros in the header file
-	InitMana(50.f);
+
+
 	
-	*/
+	
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
