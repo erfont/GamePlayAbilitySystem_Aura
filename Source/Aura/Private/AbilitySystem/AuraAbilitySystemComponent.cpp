@@ -19,7 +19,7 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 		FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString())
 		);*/
 
-	GEngine->AddOnScreenDebugMessage(
+	/*GEngine->AddOnScreenDebugMessage(
 	-1,
 	5.f,
 	FColor::Green,
@@ -31,7 +31,7 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	5.f,
 	FColor::Green,
 	FString::Printf(TEXT("Secondary Crit Hit Chance Tag: %s"),
-	*AuraGameplayTags::Attributes_Secondary_CriticalHitChance.GetTag().ToString()));
+	*AuraGameplayTags::Attributes_Secondary_CriticalHitChance.GetTag().ToString()));*/
 
 	
 }
