@@ -12,6 +12,7 @@
 class UAuraAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
+class UGameplayAbility;
 
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface  //Enemies implement IAbilitySystemInterface in their respective classes, main character implements it in PlayerState class
