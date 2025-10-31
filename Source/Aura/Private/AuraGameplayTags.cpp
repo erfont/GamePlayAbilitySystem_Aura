@@ -27,6 +27,15 @@ namespace AuraGameplayTags
 	// Vitals
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Vitals_Health, "Attributes.Vitals.Health", "Actual Health Points");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Vitals_Mana, "Attributes.Vitals.Mana", "Actual Mana Points");
+
+	// Input Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LMB, "InputTag.LMB", "Left Mouse Button");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_RMB, "InputTag.RMB", "Right Mouse Button");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_1, "InputTag.1", "1");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_2, "InputTag.2", "2");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_3, "InputTag.3", "3");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_4, "InputTag.4", "4");
+
 }
 
 

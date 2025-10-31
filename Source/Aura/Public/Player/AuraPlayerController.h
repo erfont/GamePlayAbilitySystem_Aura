@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GameplayTagContainer.h"
 #include "AuraPlayerController.generated.h"
 
+class UAuraInputConfig;
 //Forward declarations
 class UInputMappingContext;
 class UInputAction;
@@ -48,5 +50,12 @@ private:
 	TScriptInterface<IEnemyInterface> ThisActor;
 	// IEnemyInterface* LastActor; Deprecated version
 	// IEnemyInterface* ThisActor;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagRelease(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UAuraInputConfig> InputConfig;
 	
 };
