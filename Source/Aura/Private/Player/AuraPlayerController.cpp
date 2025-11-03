@@ -24,8 +24,29 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
+	Autorun();
 	
 }
+
+void AAuraPlayerController::Autorun()
+{
+	if (!bAutoRunning) return;
+	
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		// Get the location on the Spline that's closest to the character's (pawn) location
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+
+		// Get the direction to that closest Spline location
+		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+
+		ControlledPawn->AddMovementInput(Direction);
+
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius) bAutoRunning = false;
+	}
+}
+
 
 void AAuraPlayerController::BeginPlay()
 {
@@ -164,6 +185,7 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 		if (FollowTime <= ShortPressedThreshold && ControlledPawn != nullptr)
 		{
 			// For the below line to work, we need to add "NavigationSystem" to the list of private dependency modules in Aura.Build.cs
+			// Also for it to work on multiplayer, go to ProjectSettings, NavigationSystem, and activate "Allow client side navigation"
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 			{
 				Spline->ClearSplinePoints();
@@ -172,6 +194,7 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
 				}
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num()-1];
 				bAutoRunning = true;
 			}
 		}
@@ -231,3 +254,5 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 
 	return AuraAbilitySystemComponent;
 }
+
+
