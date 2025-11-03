@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 
 /* By binding our callbacks below to the corresponding delegates, we can pick any effect application here in the course code */
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
@@ -38,11 +39,58 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
 {
-	for (TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		//GiveAbility(AbilitySpec);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
+		{
+			// AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag); // DEPRECATED VERSION: 
+
+			 // Not deprecated version
+			FGameplayTagContainer& DynamicTags = AbilitySpec.GetDynamicSpecSourceTags();
+			DynamicTags.AddTag(AuraAbility->StartupInputTag);
+			
+			GiveAbility(AbilitySpec);
+		}
+
+
+	}
+}
+
+void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		// Not deprecated version
+		FGameplayTagContainer& DynamicTags = AbilitySpec.GetDynamicSpecSourceTags();
+		if (DynamicTags.HasTagExact(InputTag))
+		// if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) // Deprecated version
+		{
+			AbilitySpecInputPressed(AbilitySpec); // This tells the ability that the input is being pressed
+			if (!AbilitySpec.IsActive())
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+	}
+}
+
+void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		// Not deprecated version
+		FGameplayTagContainer& DynamicTags = AbilitySpec.GetDynamicSpecSourceTags();
+		if (DynamicTags.HasTagExact(InputTag))
+		// if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) // Deprecated version
+		{
+			AbilitySpecInputReleased(AbilitySpec); // This tells the ability that the input is being released
+
+		}
 	}
 }
 
