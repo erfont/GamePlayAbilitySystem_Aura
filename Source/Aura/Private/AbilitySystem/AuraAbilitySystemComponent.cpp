@@ -10,7 +10,7 @@
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
 	/* This is binding our method EffectApplied to whenever an Effect is applied to Self */
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
 
 	/*const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 
@@ -98,7 +98,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
  * We make the binding just above, in AbilityActorInfoSet, which is called
  * - by Aura in InitAbilityActorInfo, that's called when possessed
  * - by Enemy in BeginPlay() */
-void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
+void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
 	const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle)
 {
 	FGameplayTagContainer TagContainer;

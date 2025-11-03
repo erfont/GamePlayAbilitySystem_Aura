@@ -109,14 +109,19 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit) return;
 
 	LastActor = ThisActor;
 	ThisActor = CursorHit.GetActor();
 
-	if (ThisActor != LastActor)
+	if (LastActor != ThisActor)
+	{
+		if (LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->HighlightActor();
+	}
+
+	/*if (ThisActor != LastActor)
 	{
 		if (LastActor != nullptr)
 		{
@@ -146,7 +151,7 @@ void AAuraPlayerController::CursorTrace()
 				ThisActor->HighlightActor();
 			}			
 		}
-	}
+	}*/
 
 }
 
@@ -181,7 +186,7 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 	}
 	else
 	{
-		APawn* ControlledPawn = GetPawn<APawn>();
+		const APawn* ControlledPawn = GetPawn<APawn>();
 		if (FollowTime <= ShortPressedThreshold && ControlledPawn != nullptr)
 		{
 			// For the below line to work, we need to add "NavigationSystem" to the list of private dependency modules in Aura.Build.cs
@@ -192,7 +197,6 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 				for (const FVector& PointLoc: NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Green, false, 5.f);
 				}
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num()-1];
 				bAutoRunning = true;
@@ -230,12 +234,8 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		{
 			FollowTime += GetWorld()->GetDeltaSeconds();
 
-			FHitResult Hit;
-			if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
-			{
-				CachedDestination = Hit.ImpactPoint;
-			}
-
+			if (CursorHit.bBlockingHit) CachedDestination = CursorHit.ImpactPoint;
+			
 			if (APawn* ControlledPawn = GetPawn<APawn>())
 			{
 				const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();

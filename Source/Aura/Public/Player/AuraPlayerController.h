@@ -48,6 +48,8 @@ private:
 
 	void CursorTrace();
 
+	FHitResult CursorHit;
+
 	TScriptInterface<IEnemyInterface> LastActor;
 	TScriptInterface<IEnemyInterface> ThisActor;
 	// IEnemyInterface* LastActor; Deprecated version
