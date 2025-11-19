@@ -76,6 +76,8 @@ void AAuraPlayerController::SetupInputComponent()
 	*/
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent); 
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move); //Binding the custom MoveAction through the input component to the Move function
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::ShiftReleased);
 	AuraInputComponent->BindAbilityAction(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagRelease, &ThisClass::AbilityInputTagHeld);
 	
 }
@@ -177,14 +179,9 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
-	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagReleased(InputTag);
-		}
-	}
-	else
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+	
+	if (!bTargeting && !bShiftPressed)
 	{
 		const APawn* ControlledPawn = GetPawn<APawn>();
 		if (FollowTime <= ShortPressedThreshold && ControlledPawn != nullptr)
@@ -204,14 +201,12 @@ void AAuraPlayerController::AbilityInputTagRelease(FGameplayTag InputTag)
 		}
 		FollowTime = 0.f;
 		bTargeting = false;
-	}
-	
+	}	
 
 }
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	// GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *InputTag.ToString());
 
 	if (!InputTag.MatchesTagExact(AuraGameplayTags::InputTag_LMB))
 	{
@@ -222,7 +217,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	if (bTargeting)
+	if (bTargeting || bShiftPressed) // Second case if when pressing shift we wanna fire to wherever the mouse is pointing at
 	{
 		if (GetASC())
 		{

@@ -42,8 +42,15 @@ private:
 	TObjectPtr<UInputMappingContext> AuraContext;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
-	TObjectPtr<UInputAction> MoveAction; //MoveAction gets filled with data according to how we've configure our Input Mapping
+	TObjectPtr<UInputAction> MoveAction; //MoveAction gets filled with data according to how we've configured our Input Mapping
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	void ShiftPressed() { bShiftPressed = true; }
+	void ShiftReleased() { bShiftPressed = false; }
+	bool bShiftPressed = false;
+	
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();

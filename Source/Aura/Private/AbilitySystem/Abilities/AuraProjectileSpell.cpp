@@ -18,7 +18,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	
 }
 
-void UAuraProjectileSpell::SpawnProjectile()
+void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetlocation)
 {
 	
 	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority();
@@ -29,8 +29,12 @@ void UAuraProjectileSpell::SpawnProjectile()
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 
+		FRotator Rotation = (ProjectileTargetlocation - SocketLocation).Rotation();
+		Rotation.Pitch = 0.0f; // Fly straight, no gravity for now
+
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 
 		// TODO set the projectile rotation
 		
