@@ -36,6 +36,9 @@ namespace AuraGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_3, "InputTag.3", "3");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_4, "InputTag.4", "4");
 
+	// Damage Tags
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
+
 }
 
 
