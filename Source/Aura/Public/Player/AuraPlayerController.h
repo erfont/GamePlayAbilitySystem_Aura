@@ -10,6 +10,7 @@
 class UAuraInputConfig;
 //Forward declarations
 class UInputMappingContext;
+class UDamageTextComponent;
 class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
@@ -33,6 +34,9 @@ public:
 	AAuraPlayerController();
 	virtual void PlayerTick(float DeltaTime) override;
 
+	UFUNCTION(Client, Reliable)
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -87,4 +91,7 @@ private:
 	TObjectPtr<USplineComponent> Spline;
 
 	void Autorun();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 };
