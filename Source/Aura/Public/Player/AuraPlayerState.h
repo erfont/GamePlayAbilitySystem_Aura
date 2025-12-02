@@ -40,7 +40,7 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_Level)
-	int32 Level = 50;
+	int32 Level = 15;
 
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);

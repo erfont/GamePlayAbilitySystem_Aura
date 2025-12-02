@@ -8,6 +8,8 @@
 #include "Actor/AuraProjectile.h"
 #include "Interaction/CombatInterface.h"
 #include "Aura/Public/AuraGameplayTags.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/AuraPlayerState.h"
 
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -50,9 +52,25 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetlocati
 		
 		// Setting a Damage SpecHandle out of a GameplayEffect class created for Damage
 		UAbilitySystemComponent* SourceASC =  UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-		FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 
-		const float ScaledDamage = Damage.GetValueAtLevel(10);
+		// Adding the below to the EffectContextHandle to show what you can fill it in with
+		FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
+		EffectContextHandle.SetAbility(this);
+		EffectContextHandle.AddSourceObject(Projectile);
+		TArray<TWeakObjectPtr<AActor>> Actors;
+		Actors.Add(Projectile);
+		EffectContextHandle.AddActors(Actors);
+		FHitResult HitResult;
+		HitResult.Location = ProjectileTargetlocation;
+		EffectContextHandle.AddHitResult(HitResult);
+
+		// Setting the EffectContextHandle to the DamageEffectClass
+		FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
+
+		// Setting the actual damage value based on Aura's player level (custom José)
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(SourceASC->GetAvatarActor(), 0);
+		const int AuraPlayerLevel = PlayerController->GetPlayerState<AAuraPlayerState>()->GetPlayerLevel();
+		const float ScaledDamage = Damage.GetValueAtLevel(AuraPlayerLevel);
 		
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, AuraGameplayTags::Damage, ScaledDamage); // This line assigns GE_Damage to the Magnitude for that damage, and to the SpecHandle that packs the whole GE
 		
