@@ -38,6 +38,7 @@ namespace AuraGameplayTags
 
 	// Damage Tags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage, "Damage", "Damage");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Damage_Fire, "Damage.Fire", "Fire Damage Type");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effect_HitReact, "Effects.Hit React", "Hit React");
 
 }

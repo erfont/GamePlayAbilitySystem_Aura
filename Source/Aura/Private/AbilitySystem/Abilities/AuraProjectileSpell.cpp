@@ -67,12 +67,17 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetlocati
 		// Setting the EffectContextHandle to the DamageEffectClass
 		FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
 
+		for (auto& Pair : DamageTypes)
+		{
+			const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
+			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Pair.Key, ScaledDamage); // This line assigns GE_Damage to the Magnitude for that damage, and to the SpecHandle that packs the whole GE
+		}
+
 		// Setting the actual damage value based on Aura's player level (custom José)
-		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(SourceASC->GetAvatarActor(), 0);
+		/*APlayerController* PlayerController = UGameplayStatics::GetPlayerController(SourceASC->GetAvatarActor(), 0);
 		const int AuraPlayerLevel = PlayerController->GetPlayerState<AAuraPlayerState>()->GetPlayerLevel();
-		const float ScaledDamage = Damage.GetValueAtLevel(AuraPlayerLevel);
+		const float ScaledDamage = Damage.GetValueAtLevel(AuraPlayerLevel);*/
 		
-		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, AuraGameplayTags::Damage, ScaledDamage); // This line assigns GE_Damage to the Magnitude for that damage, and to the SpecHandle that packs the whole GE
 		
 		Projectile->DamageEffectSpecHandle = SpecHandle;
 		

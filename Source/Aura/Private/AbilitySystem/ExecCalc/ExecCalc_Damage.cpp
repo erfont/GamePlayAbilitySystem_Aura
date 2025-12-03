@@ -68,7 +68,21 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluateParams.TargetTags = TargetTags;
 
 	// Get Damage set by Caller magnitude
-	float Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Damage);
+	//float Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Damage);
+
+	// Get Damage from all Damage_Children tags
+	float Damage = 0.f;
+	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(AuraGameplayTags::Damage);
+	AllDamageTags.AddTag(AuraGameplayTags::Damage);
+	
+	for(const auto& Tag : AllDamageTags)
+	{
+		//Get damage set by caller magnitude
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Tag);
+		Damage += DamageTypeValue;
+	}
+
+	
 
 	// Capture Block Chance on target and determine if successful block	
 	float TargetBlockChance = 0;
