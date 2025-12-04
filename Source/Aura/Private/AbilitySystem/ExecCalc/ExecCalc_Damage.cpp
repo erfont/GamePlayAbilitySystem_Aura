@@ -73,7 +73,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	// Get Damage from all Damage_Children tags
 	float Damage = 0.f;
 	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(AuraGameplayTags::Damage);
-	AllDamageTags.AddTag(AuraGameplayTags::Damage);
+	//AllDamageTags.AddTag(AuraGameplayTags::Damage);
 	
 	for(const auto& Tag : AllDamageTags)
 	{
