@@ -9,6 +9,7 @@
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 struct AuraDamageStatics
 {
@@ -71,7 +72,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	//float Damage = Spec.GetSetByCallerMagnitude(AuraGameplayTags::Damage);
 
 	// Get Damage from all Damage_Children tags
-	float Damage = 0.f;
+	/*float Damage = 0.f;
 	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(AuraGameplayTags::Damage);
 	//AllDamageTags.AddTag(AuraGameplayTags::Damage);
 	
@@ -80,6 +81,29 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		//Get damage set by caller magnitude
 		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Tag);
 		Damage += DamageTypeValue;
+	}*/
+
+
+	float Damage = 0.f;
+	/*float Resistance = 0.f;
+	FGameplayTagContainer AllDamageTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(AuraGameplayTags::Damage);
+	FGameplayTagContainer AllResistanceTags = UGameplayTagsManager::Get().RequestGameplayTagChildren(AuraGameplayTags::Attributes_Resistance);
+ 
+	for (int32 i = 0; i < AllDamageTags.Num(); ++i)
+	{
+		const FGameplayTag& DamageTag = AllDamageTags.GetByIndex(i);
+		const FGameplayTag& ResistanceTag = AllResistanceTags.GetByIndex(i);
+ 
+		// TODO: Use ResistanceTag
+		Damage += Spec.GetSetByCallerMagnitude(DamageTag);
+	}*/
+
+	UAuraGameplayTags* GameplayTagsSubsystem = UGameplayStatics::GetGameInstance(SourceAvatar)->GetSubsystem<UAuraGameplayTags>();
+			
+	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : GameplayTagsSubsystem->DamageTypesToResistance)
+	{
+		// Pair.Value is the resistance gameplay tag
+		Damage += Spec.GetSetByCallerMagnitude(Pair.Key);
 	}
 
 	
@@ -147,3 +171,4 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage); // Pack it...
 	OutExecutionOutput.AddOutputModifier(EvaluatedData); // ... and send it back
 }
+

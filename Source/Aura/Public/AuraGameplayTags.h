@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "NativeGameplayTags.h"
+#include "AuraGameplayTags.generated.h"
 
 
 /**
@@ -38,6 +39,13 @@ namespace AuraGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Health);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Mana);
 
+	// Resistances
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Fire);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Lightning);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Arcane);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Physical);
+
 	// Inputs
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LMB);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_RMB);
@@ -49,7 +57,28 @@ namespace AuraGameplayTags
 	// Damage
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Lightning);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Arcane);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
+	
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effect_HitReact);
 
 }
 
+UCLASS()
+class AURA_API UAuraGameplayTags : public UGameInstanceSubsystem 
+{
+	GENERATED_BODY()
+public:
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
+	virtual void Deinitialize() override;
+	
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistance;
+ 
+	void InitializeDamageTypeMappings();
+ 
+private:
+	
+};
