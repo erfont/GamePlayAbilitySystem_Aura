@@ -52,6 +52,9 @@ namespace AuraGameplayTags
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Effect_HitReact, "Effects.Hit React", "Hit React");
 
+	// Abilities
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Abilities_Attack, "Abilities.Attack", "Attack");
+
 
 
 }

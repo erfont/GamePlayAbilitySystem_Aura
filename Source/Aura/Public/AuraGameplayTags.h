@@ -63,6 +63,9 @@ namespace AuraGameplayTags
 	
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effect_HitReact);
 
+	// Abilities
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
+
 }
 
 UCLASS()
