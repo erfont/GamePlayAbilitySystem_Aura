@@ -62,6 +62,10 @@ namespace AuraGameplayTags
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
 	
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effect_HitReact);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_Weapon);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_RightHand);
+	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_LeftHand);
+
 
 	// Abilities
 	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
