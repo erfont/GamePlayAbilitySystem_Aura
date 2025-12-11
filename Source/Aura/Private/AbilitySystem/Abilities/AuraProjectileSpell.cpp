@@ -30,7 +30,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& ProjectileTargetlocati
 
 	if (!bIsServer) return;
 
-	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
+	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), AuraGameplayTags::Montage_Attack_Weapon);
 
 	FRotator Rotation = (ProjectileTargetlocation - SocketLocation).Rotation();
 	Rotation.Pitch = 0.0f; // Fly straight, no gravity for now
