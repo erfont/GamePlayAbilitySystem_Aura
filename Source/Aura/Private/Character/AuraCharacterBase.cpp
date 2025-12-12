@@ -138,7 +138,7 @@ void AAuraCharacterBase::AddCharacterAbilities() const
 }
 
 void AAuraCharacterBase::Dissolve()
-{
+{	
 	if (IsValid(DissolveMaterialInstance))
 	{
 		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
