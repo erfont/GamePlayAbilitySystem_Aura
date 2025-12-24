@@ -89,6 +89,7 @@ int32 AAuraEnemy::GetPlayerLevel()
 
 void AAuraEnemy::Die()
 {
+	AuraAIController->GetBrainComponent()->StopLogic(TEXT("Died"));
 	SetLifeSpan(LifeSpan);
 	Super::Die();
 }

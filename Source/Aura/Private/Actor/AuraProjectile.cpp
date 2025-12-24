@@ -75,6 +75,15 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 		return;
 	}
 
+	AActor* ThisOwner = GetOwner();
+
+	if (!IsValid(ThisOwner))
+	{
+		bHit = true;
+		Destroy();
+		return;
+	}
+
 	if (!bHit)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
