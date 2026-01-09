@@ -9,6 +9,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UNiagaraSystem;
 class UAuraAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -36,6 +37,7 @@ public:
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 	virtual TArray<FTaggedMontage> GetAttackMontages_Implementation() override;
+	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TArray<FTaggedMontage> AttackMontages;
@@ -102,6 +104,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UNiagaraSystem* BloodEffect;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Abilities")
